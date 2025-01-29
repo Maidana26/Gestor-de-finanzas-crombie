@@ -18,8 +18,8 @@ export const authOptions: AuthOptions = {
         email: { label: "Email", type: "text", placeholder: "jsmith" },
         password: { label: "Password", type: "password", placeholder: "*****" },
       },
-      // El tipo de 'credentials' es 'Credentials', que hemos definido arriba
-      async authorize(credentials: Credentials | undefined, req) {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async authorize(credentials: any) {
         
         // Verificamos si 'credentials' está definido antes de acceder a sus propiedades
         if (!credentials) {
