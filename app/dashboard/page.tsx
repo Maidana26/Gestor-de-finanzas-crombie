@@ -1,26 +1,15 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const DashboardPage = () => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (!storedUser) {
-      router.push('/'); // Redirigir al login si no está autenticado
-    } else {
-      setUser(JSON.parse(storedUser));
-      setLoading(false);
-    }
-  }, [router]);
-
-  if (loading) {
-    return <p className="text-center text-gray-500">Cargando...</p>;
-  }
+  // Función para cerrar sesión y redirigir al inicio
+  const handleLogout = async () => {
+    await signOut({ callbackUrl: '/' });  // Redirige al home después de cerrar sesión
+  };
 
   return (
     <div className="min-h-screen bg-gray-900 text-white flex flex-col">
@@ -37,10 +26,7 @@ const DashboardPage = () => {
             </button>
           </nav>
           <button
-            onClick={() => {
-              localStorage.removeItem('user');
-              router.push('/');
-            }}
+            onClick={handleLogout}  // Llama a la función de logout
             className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
           >
             Cerrar Sesión
@@ -51,7 +37,7 @@ const DashboardPage = () => {
       {/* Main Content */}
       <main className="flex-1 container mx-auto p-6">
         <h1 className="text-4xl font-extrabold mb-8 text-green-500">
-          Bienvenido, {user?.name} 👋
+          Bienvenido 👋
         </h1>
 
         {/* Resumen General */}
